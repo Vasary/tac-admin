@@ -1,26 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <LoaderComponent :visible="loading"/>
+    <Layout>
+        <router-view/>
+    </Layout>
+    <Toasts/>
 </template>
 
+<style>
+*, *::before, *::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+</style>
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Layout from "./layout/LayoutDefault";
+import LoaderComponent from "./components/LoaderComponent";
+import {mapState} from "vuex";
+import Toasts from "./components/toast/ToastsWrapper";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    computed: {
+        ...mapState({
+            loading: (state) => state.loader.loading,
+        }),
+    },
+    components: {
+        Toasts,
+        Layout,
+        LoaderComponent
+    }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
