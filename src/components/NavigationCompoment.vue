@@ -25,6 +25,9 @@
             <ProfileLinks :avatar="avatar(email)" :name="name" :email="email"/>
         </div>
     </nav>
+
+    {{ token() }}
+
 </template>
 
 <style lang="scss" scoped>
@@ -157,6 +160,11 @@ export default {
         avatar,
         toggleMobileMenu() {
             this.openMobileMenu = !this.openMobileMenu;
+        },
+        token() {
+            this.$auth0.getAccessTokenSilently().then(result => console.log(result))
+
+            return ''
         }
     },
 }
