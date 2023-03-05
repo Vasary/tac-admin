@@ -30,4 +30,4 @@ jobs:
         run: docker build . --file .build/Dockerfile --tag vasary/tac-admin:latest
 
       - name: Push the latest Docker image
-        run: docker push vasary/tac-admin:admin
+        run: docker push vasary/tac-admin:latest
