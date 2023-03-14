@@ -2,11 +2,11 @@ import api from "./instance/users"
 
 class Users {
     list(page, size) {
-        return api.get(`/users?page=${page}&limit=${size}`);
+        return api.get(`/api/v2/users?page=${page}&per_page=${size}&include_totals=true`);
     }
 
-    search(pattern) {
-        return api.get(`/users/${pattern}`);
+    search(page, size, searchField, searchValue) {
+        return api.get(`/api/v2/users?q=${searchField}:*${searchValue}*&page=${page}&per_page=${size}&include_totals=true&search_engine=v3`);
     }
 }
 

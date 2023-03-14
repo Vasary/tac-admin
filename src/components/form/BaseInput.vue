@@ -7,6 +7,7 @@
         :maxlength="length"
         :readonly="readonly"
         :value="value"
+        :placeholder="placeholder"
     />
   </div>
 </template>
@@ -15,6 +16,8 @@
 @import "src/assets/scss/_variables.scss";
 
 .group {
+  width: inherit;
+
   label {
     color: $text-color;
   }
@@ -66,6 +69,10 @@ export default {
     label: {
       type: String,
       default: "",
+    },
+    placeholder: {
+        type: String,
+        default: "",
     },
     value: {
       type: [String, Number, Boolean],

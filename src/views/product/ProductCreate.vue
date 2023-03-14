@@ -19,7 +19,7 @@
           type="button"
           color="secondary"
           @click="addAttribute"
-      >Add new attribute
+      >Add attribute
       </BaseButton>
     </div>
 

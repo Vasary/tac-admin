@@ -1,25 +1,45 @@
-import axiosInstance from "./instance/api";
-
 function id() {
     return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 }
 
-const setup = ({dispatch}, getAccessToken) => {
-    axiosInstance.interceptors.request.use(
-        async (config) => {
-            const accessToken = await getAccessToken()
+const notification = (dispatch, response, message, type) => {
+    let constraints = []
 
-            config.headers = {
-                Authorization: `Bearer ${accessToken}`,
-                ...config.headers,
+    if (undefined !== response && 'data' in response && undefined !== response.data && 'constraints' in response.data) {
+        constraints = response.data.constraints
+    }
+
+    const title = undefined !== response && 'statusText' in response && '' !== response.statusText
+        ? response.statusText
+        : 'Unexpected error'
+
+    dispatch('toast/add', {
+        id: id(),
+        title: title,
+        type: type,
+        message: message,
+        constraints: constraints
+    });
+};
+
+const setup = ({dispatch}, axiosInstance, getAccessToken) => {
+    if (undefined !== getAccessToken) {
+        axiosInstance.interceptors.request.use(
+            async (config) => {
+                const accessToken = await getAccessToken()
+
+                config.headers = {
+                    Authorization: `Bearer ${accessToken}`,
+                    ...config.headers,
+                }
+
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
             }
-
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        }
-    );
+        );
+    }
 
     let requestsPending = 0;
     const actionScope = `loader`;
@@ -34,33 +54,6 @@ const setup = ({dispatch}, getAccessToken) => {
             if (requestsPending <= 0) {
                 dispatch(`${actionScope}/hide`);
             }
-        }
-    };
-
-    const toast = {
-        success: (response, message) => {
-            toast.send(response, message, 'success');
-        },
-        error: (response, message) => {
-            toast.send(response, message, 'error');
-        },
-        validation: (response, message) => {
-            toast.send(response, message, 'error');
-        },
-        send: (response, message, type) => {
-            let constraints = []
-
-            if (undefined !== response && undefined !== response.data && undefined !== response.data.constraints) {
-                constraints = response.data.constraints
-            }
-
-            dispatch('toast/add', {
-                id: id(),
-                title: `${response.statusText}`,
-                type: type,
-                message: message,
-                constraints: constraints
-            });
         }
     };
 
@@ -94,13 +87,8 @@ const setup = ({dispatch}, getAccessToken) => {
         response => response,
         error => {
             switch (error.code) {
-                case 'ERR_BAD_REQUEST':
-                    toast.validation(error.response, error.message)
-                    break;
-
-                default:
-                    toast.error(error.response, error.message)
-                    break;
+                case 'ERR_BAD_REQUEST': notification(dispatch, error.response, error.message, 'error'); break;
+                default: notification(dispatch, error.response, error.message, 'error'); break;
             }
 
             return Promise.reject(error);

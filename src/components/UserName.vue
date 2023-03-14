@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/scss/_variables.scss";
+@import "../assets/scss/_variables.scss";
 
 div {
   padding: 10px 15px;

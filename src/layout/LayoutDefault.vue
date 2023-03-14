@@ -1,10 +1,10 @@
 <template>
-  <NavigationComponent/>
-  <BreadcrumbsComponent></BreadcrumbsComponent>
+    <HeaderComponent/>
+    <BreadcrumbsComponent></BreadcrumbsComponent>
 
-  <div class="page-wrapper">
-    <slot/>
-  </div>
+    <div class="page-wrapper">
+        <slot/>
+    </div>
 </template>
 
 <style lang="scss">
@@ -39,14 +39,14 @@ form {
 </style>
 
 <script>
-import NavigationComponent from "~/components/NavigationCompoment";
 import BreadcrumbsComponent from "~/components/BreadcrumbsComponent";
+import HeaderComponent from "~/components/HeaderComponent.vue";
 
 export default {
-  name: 'LayoutDefault',
-  components: {
-    BreadcrumbsComponent,
-    NavigationComponent,
-  }
+    name: 'LayoutDefault',
+    components: {
+        HeaderComponent,
+        BreadcrumbsComponent,
+    }
 }
 </script>

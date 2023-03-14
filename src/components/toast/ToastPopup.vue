@@ -35,9 +35,7 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      this.dismissToast();
-    }, 8000);
+    setTimeout(() => this.dismissToast(), 8000);
   },
   methods: {
     dismissToast() {
@@ -55,7 +53,7 @@ export default {
   border: 1px solid #e6e7e9;
   border-radius: 8px;
   background: white;
-  padding: 10px;
+  padding: 10px 30px 10px 10px;
   font-size: 12px;
   min-width: 300px;
   margin-bottom: 10px;
@@ -117,6 +115,7 @@ export default {
         width: 100%;
         display: flex;
         justify-content: space-between;
+        flex-direction: row-reverse;
 
         a {
           text-decoration: none;
